@@ -32,6 +32,8 @@ repositories {
 }
 
 dependencies {
+System.getenv().put("SONAR_TOKEN", "89c45161ba6f8f8d9483e20a35572cd4f3d1d2d0")
+
 	def activeProfile = System.getenv('SPRING_PROFILES_ACTIVE')
 	logger.quiet('Active profile: ' + activeProfile)
 
