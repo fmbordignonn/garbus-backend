@@ -1,0 +1,58 @@
+management:
+  endpoint:
+    health:
+      show-details: when_authorized
+
+## Server Properties
+server:
+  port: 8080
+  servlet:
+    context-path: /api/garbus
+
+jwt:
+  secret: secretkey123
+  token-validity: 18000
+
+spring:
+  banner:
+    location: ./banner.txt
+  application:
+    name: GARBUS
+
+  #Java Persistence API
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        default_schema: 'PUBLIC'
+
+  # H2 DB Configuration
+  h2:
+    console:
+      enabled: true
+      path: /h2
+
+  # DB Connection Configuration
+  datasource:
+    initialization-mode: embedded
+    url: jdbc:h2:mem:garbus
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+
+events:
+  problem_status:
+    error: E
+    error_others: O
+    reactivated: R
+
+mail:
+  sender:
+    username: projetogarbus@gmail.com
+    password:
+    mail-api-key:
+  server:
+    host: smtp.gmail.com
+    port: 587

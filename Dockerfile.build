@@ -1,0 +1,11 @@
+FROM gradle:6.8.3-jdk11
+
+ARG SPRING_PROFILES_ACTIVE
+ENV SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+
+WORKDIR /app
+COPY . .
+
+RUN gradle build -x test
+
+CMD ["echo", "Copie os arquivos deste container com 'docker cp garbus-backend-build:/app/build/libs/garbus-backend.war .docker-build/garbus-backend/build'"]

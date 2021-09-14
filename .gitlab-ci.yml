@@ -1,0 +1,43 @@
+variables:
+  ORCHESTRATION_FOLDER: /home/${USER}/garbus/garbus-orchestration
+  SOURCE_FOLDER: /docker-build/backend
+  TARGET_FOLDER: $ORCHESTRATION_FOLDER/.docker-build/garbus-backend
+  SPRING_PROFILES_ACTIVE: prod
+
+build:
+  stage: build
+  image: gradle:6.8.3-jdk11
+  before_script:
+    - rm -rf $SOURCE_FOLDER
+    - mkdir -p $SOURCE_FOLDER/build
+  script:
+    - cp Dockerfile $SOURCE_FOLDER
+    - SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE gradle build -x test
+    - cp build/libs/garbus-backend.war $SOURCE_FOLDER/build
+    - ls $SOURCE_FOLDER/build/garbus-backend.war
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "dev" || $CI_COMMIT_REF_NAME == "master"'
+
+test:
+  stage: test
+  image: gradle:6.8.3-jdk11
+  script:
+    - SPRING_PROFILES_ACTIVE=dev gradle test
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "dev" || $CI_COMMIT_REF_NAME == "master"'
+
+deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - mkdir -p ~/.ssh
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    - 'echo "$SSH_PRIVATE_KEY" | tr -d "\r" | ssh-add -'
+    - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - ssh $USER@$HOST "rm -rf $TARGET_FOLDER && mkdir -p $TARGET_FOLDER"
+    - scp -pr $SOURCE_FOLDER/* $USER@$HOST:$TARGET_FOLDER/
+    - ssh $USER@$HOST "cd $ORCHESTRATION_FOLDER && docker-compose --profile backend up --build -d"
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'

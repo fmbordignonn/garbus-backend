@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "environments.test.datasource",
+      "type": "java.lang.String",
+      "description": "Description for environments.test.datasource."
+  }
+] }
