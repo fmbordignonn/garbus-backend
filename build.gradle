@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'war'
+	id "org.sonarqube" version "3.3"
 }
 
 group = 'pucrs.ages'
@@ -93,4 +94,14 @@ dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
+}
+
+}
+
+sonarqube {
+  properties {
+    property "sonar.projectKey", "fmbordignonn_garbus-backend"
+    property "sonar.organization", "fmbordignonn"
+    property "sonar.host.url", "https://sonarcloud.io"
+  }
 }
