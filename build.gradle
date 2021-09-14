@@ -66,7 +66,7 @@ System.getenv().put("SONAR_TOKEN", "89c45161ba6f8f8d9483e20a35572cd4f3d1d2d0")
 	implementation 'io.springfox:springfox-swagger2:2.9.2'
 
 	// Adding Health Check
-	compile 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 	// Adding Entity DTO Mapper
 	implementation 'org.modelmapper:modelmapper:2.3.5'
@@ -79,7 +79,7 @@ System.getenv().put("SONAR_TOKEN", "89c45161ba6f8f8d9483e20a35572cd4f3d1d2d0")
 	}
 
 	//Adding Email
-	compile 'javax.mail:mail:1.4.7'
+	implementation 'javax.mail:mail:1.4.7'
 
 	implementation group: 'org.passay', name: 'passay', version: '1.6.0'
 
